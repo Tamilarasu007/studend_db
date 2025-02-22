@@ -12,7 +12,7 @@ async def root():
     return {"message": "Hello, World"}
 
 
-@app.post("/students/")
+@app.post("/post/student")
 def create_student(student: StudentCreate, db: Session = Depends(get_db)):
     new_student = Student(name=student.name, age=student.age, course=student.course)
     db.add(new_student)
@@ -21,7 +21,7 @@ def create_student(student: StudentCreate, db: Session = Depends(get_db)):
     return new_student
 
 
-@app.get("/students/{student_id}")
+@app.get("/read/students/{student_id}")
 def read_student(student_id: int, db: Session = Depends(get_db)):
     student = db.query(Student).filter(Student.id == student_id).first()
     if student is None:
@@ -29,12 +29,12 @@ def read_student(student_id: int, db: Session = Depends(get_db)):
     return student
 
 
-@app.get("/students/")
+@app.get("/get/student/list")
 def read_all_students(db: Session = Depends(get_db)):
     return db.query(Student).all()
 
 
-@app.put("/students/{student_id}")
+@app.put("/update/students/{student_id}")
 def update_student(student_id: int, student: StudentCreate, db: Session = Depends(get_db)):
     existing_student = db.query(Student).filter(Student.id == student_id).first()
     if existing_student is None:
@@ -48,7 +48,7 @@ def update_student(student_id: int, student: StudentCreate, db: Session = Depend
     return existing_student
 
 
-@app.delete("/students/{student_id}")
+@app.delete("/delete/students/{student_id}")
 def delete_student(student_id: int, db: Session = Depends(get_db)):
     student = db.query(Student).filter(Student.id == student_id).first()
     if student is None:
